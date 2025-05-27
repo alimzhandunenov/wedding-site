@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alimzhan & Zhibek</title>
+  <title>Alimzhan & Zhibek Wedding</title>
   <style>
     body {
       margin: 0;
@@ -14,11 +14,7 @@
     }
     header {
       height: 100vh;
-      background: url('https://ibb.co/bjVRn4Tm
-https://ibb.co/cz2sw3w
-https://ibb.co/p6rXdCX9
-https://ibb.co/TqBvVQKV
-https://ibb.co/mrpRyBpp') center center / cover no-repeat;
+      background: url('https://i.ibb.co/bjVRn4Tm.jpg') center center / cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -27,42 +23,15 @@ https://ibb.co/mrpRyBpp') center center / cover no-repeat;
       text-shadow: 0 1px 10px rgba(0,0,0,0.7);
       text-align: center;
     }
-    h1 {
-      font-size: 3em;
-      margin: 0;
-    }
-    h2 {
-      font-size: 1.5em;
-      margin: 0.5em 0;
-    }
-    section {
-      padding: 40px 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .rsvp {
-      background-color: #f9e5df;
-      padding: 30px;
-      border-radius: 10px;
-    }
+    h1 { font-size: 3em; margin: 0; }
+    h2 { font-size: 1.5em; margin: 0.5em 0; }
+    section { padding: 40px 20px; max-width: 800px; margin: auto; }
+    .rsvp, .gallery { background-color: #f9e5df; padding: 30px; border-radius: 10px; }
     input, select, textarea, button {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      font-family: inherit;
-      font-size: 1em;
+      width: 100%; margin: 10px 0; padding: 10px; font-family: inherit; font-size: 1em;
     }
-    button {
-      background-color: #ffb6b6;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-    iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-    }
+    button { background-color: #ffb6b6; border: none; color: white; cursor: pointer; }
+    img.gallery-photo { width: 100%; max-width: 600px; margin-bottom: 20px; border-radius: 10px; }
   </style>
 </head>
 <body>
@@ -84,23 +53,54 @@ https://ibb.co/mrpRyBpp') center center / cover no-repeat;
   </p>
 </section>
 
+<section class="gallery">
+  <h2>Фото</h2>
+  <img src="https://i.ibb.co/bjVRn4Tm.jpg" class="gallery-photo" /><img src="https://i.ibb.co/cz2sw3w.jpg" class="gallery-photo" /><img src="https://i.ibb.co/p6rXdCX9.jpg" class="gallery-photo" /><img src="https://i.ibb.co/TqBvVQKV.jpg" class="gallery-photo" /><img src="https://i.ibb.co/mrpRyBpp.jpg" class="gallery-photo" />
+</section>
+
 <section class="rsvp">
   <h2>Подтвердите участие</h2>
-  <form action="https://api.sheetmonkey.io/form/ВАШ_КОД" method="POST">
-    <input type="text" name="Имя" placeholder="Ваше имя" required />
-    <select name="Присутствие">
+  <form id="rsvpForm">
+    <input type="text" name="name" placeholder="Ваше имя" required />
+    <select name="attending">
       <option value="Да">Да, я приду</option>
       <option value="Нет">Нет, к сожалению</option>
     </select>
-    <input type="number" name="Гостей" placeholder="Сколько человек будет с вами?" min="1" />
-    <textarea name="Комментарий" placeholder="Комментарий..."></textarea>
+    <input type="number" name="guests" placeholder="Сколько человек будет с вами?" min="1" />
+    <textarea name="comment" placeholder="Комментарий..."></textarea>
     <button type="submit">Отправить</button>
+    <p id="statusMsg"></p>
   </form>
 </section>
 
 <audio autoplay loop>
-  <source src="ССЫЛКА_НА_ВАШУ_МУЗЫКУ.mp3" type="audio/mpeg">
+  <source src="Archer_Marsh_-_Give_Me_Everything_Stripped_Down_77962486.mp3" type="audio/mpeg">
 </audio>
+
+<script>
+  document.getElementById("rsvpForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const form = e.target;
+    fetch("https://script.google.com/macros/s/AKfycbwySsTBePMJVKrJuot2ykxEllGp1Xwzc1Dq4sAhhxHcJXZg5B0nPjMNovgTvqIIPJX--Q/exec", {
+      method: "POST",
+      body: JSON.stringify({
+        name: form.name.value,
+        attending: form.attending.value,
+        guests: form.guests.value,
+        comment: form.comment.value
+      }),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.text())
+    .then(data => {
+      form.reset();
+      document.getElementById("statusMsg").innerText = "Спасибо, ответ записан!";
+    })
+    .catch(err => {
+      document.getElementById("statusMsg").innerText = "Произошла ошибка.";
+    });
+  });
+</script>
 
 </body>
 </html>
